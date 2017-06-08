@@ -1,0 +1,24 @@
+{
+  "name": "strawbees-content-graphql",
+  "description": "Access to Strawbees content via graphql",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "deploy": "now --public -e SPACE_ID -e CDA_TOKEN -e CMA_TOKEN"
+  },
+  "now": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cf-graphql": "^0.4.2",
+    "contentful": "^4.4.2",
+    "express": "^4.15.3",
+    "express-graphql": "^0.6.6"
+  },
+  "devDependencies": {
+    "now": "^6.2.4"
+  }
+}
