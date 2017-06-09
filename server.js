@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const graphqlHTTP = require('express-graphql')
 const contentful = require('contentful')
 
-const CACHE = {}
+let CACHE = {}
 
 const port = process.env.PORT || 4000;
 const spaceId = process.env.SPACE_ID;
@@ -29,6 +29,10 @@ const init = async () => {
 		})
 		app.get('/', (req, res, next) => {
 			res.json(metas)
+		})
+		app.get('/_drop_cache', (req, res, next) => {
+			CACHE = {}
+			res.json({ success : true })
 		})
 		app.listen(port)
 
