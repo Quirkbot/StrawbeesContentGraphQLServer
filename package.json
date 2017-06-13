@@ -1,6 +1,6 @@
 {
   "name": "strawbees-content-graphql-server",
-  "version" : "0.0.1",
+  "version" : "0.0.2",
   "description": "Access to Strawbees content via graphql",
   "scripts": {
     "start": "node server.js",
