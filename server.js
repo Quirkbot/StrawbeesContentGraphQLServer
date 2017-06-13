@@ -88,7 +88,7 @@ const startServer = (client, schema, locale) => {
 	const opts = { version : false, timeline : false, detailedErrors : false }
 	const ext = cfGraphql.helpers.expressGraphqlExtension(client, schema, opts)
 	app.use(`/${locale}/graphql`, (req, res, next) => {
-		const key = req.method === 'POST' ? JSON.stringify(req.body) : req.url
+		const key = req.method === 'POST' ? JSON.stringify(req.body) : req.originalUrl
 		if (CACHE[key]) {
 			res.json(CACHE[key])
 			return
