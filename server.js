@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const graphqlHTTP = require('express-graphql')
 const contentful = require('contentful')
 
-let CACHE = {}
+//let CACHE = {}
 
 const port = process.env.PORT || 4000;
 const spaceId = process.env.SPACE_ID;
@@ -30,10 +30,10 @@ const init = async () => {
 		app.get('/', (req, res, next) => {
 			res.json(metas)
 		})
-		app.get('/_drop_cache', (req, res, next) => {
+		/*app.get('/_drop_cache', (req, res, next) => {
 			CACHE = {}
 			res.json({ success : true })
-		})
+		})*/
 		app.listen(port)
 
 		// Create a graphwl server for each locale
@@ -60,7 +60,6 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 	.filter(item => item.sys.contentType.sys.id === 'siteMeta')
 	.pop().fields
 }
-
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
 	return Promise.all(meta.avaiableLocales.map(locale =>
@@ -89,14 +88,14 @@ const startServer = (client, schema, locale) => {
 	const ext = cfGraphql.helpers.expressGraphqlExtension(client, schema, opts)
 	app.use(`/${locale}/graphql`, (req, res, next) => {
 		const key = req.method === 'POST' ? JSON.stringify(req.body) : req.originalUrl
-		if (CACHE[key]) {
+		/*if (CACHE[key]) {
 			res.json(CACHE[key])
 			return
-		}
+		}*/
 		res.tempJson = res.json
 		res.json = (data) => {
-			CACHE[key] = data
-			res.tempJson(CACHE[key])
+			//CACHE[key] = data
+			res.tempJson(data)
 		}
 		next()
 	})
