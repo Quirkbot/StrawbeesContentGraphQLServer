@@ -62,9 +62,10 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 }
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
-	return Promise.all(meta.avaiableLocales.map(locale =>
-		fetchSpaceMeta({ cdaToken, spaceId, locale })
-	))
+	return Promise.all(meta.avaiableLocales.map(localeString => {
+		const locale = localeString.split('_')[0]
+		return fetchSpaceMeta({ cdaToken, spaceId, locale })
+	}))
 }
 
 const createDataServer = async ({ spaceId, cdaToken, cmaToken, locale }) => {
