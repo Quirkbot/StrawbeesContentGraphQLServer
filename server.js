@@ -57,7 +57,7 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 	const responses = await client.getEntries({ locale })
 	return responses.items
 	.filter(item => item.sys.contentType)
-	.filter(item => item.sys.contentType.sys.id === 'siteMeta')
+	.filter(item => item.sys.contentType.sys.id === 'settings')
 	.pop().fields
 }
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
