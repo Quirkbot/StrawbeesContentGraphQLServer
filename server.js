@@ -55,11 +55,6 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 		space       : spaceId
 	})
 	const responses = await client.getEntries({ locale })
-	console.log(
-		responses.items
-		.filter(item => item.sys.contentType)
-		.filter(item => item.sys.contentType.sys.id === 'settings')
-	)
 	return responses.items
 	.filter(item => item.sys.contentType)
 	.filter(item => item.sys.contentType.sys.id === 'settings')
