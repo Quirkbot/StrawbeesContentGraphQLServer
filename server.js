@@ -55,6 +55,11 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 		space       : spaceId
 	})
 	const responses = await client.getEntries({ locale })
+	console.log(
+		responses.items
+		.filter(item => item.sys.contentType)
+		.filter(item => item.sys.contentType.sys.id === 'settings')
+	)
 	return responses.items
 	.filter(item => item.sys.contentType)
 	.filter(item => item.sys.contentType.sys.id === 'settings')
@@ -62,7 +67,7 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 }
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
-	return Promise.all(meta.avaiableLocales.map(localeString => {
+	return Promise.all(meta.availableLocales.map(localeString => {
 		const locale = localeString.split('_')[0]
 		return fetchSpaceMeta({ cdaToken, spaceId, locale })
 	}))
