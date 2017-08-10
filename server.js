@@ -7,10 +7,10 @@ const contentful = require('contentful')
 
 //let CACHE = {}
 
-const port = process.env.PORT || 4000;
-const spaceId = process.env.SPACE_ID;
-const cdaToken = process.env.CDA_TOKEN;
-const cmaToken = process.env.CMA_TOKEN;
+const port = process.env.GRAPHQL_PORT || process.env.PORT || 5000
+const spaceId = process.env.SPACE_ID
+const cdaToken = process.env.CDA_TOKEN
+const cmaToken = process.env.CMA_TOKEN
 
 let app
 
@@ -54,7 +54,7 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 		accessToken : cdaToken,
 		space       : spaceId
 	})
-	const responses = await client.getEntries({ locale })
+	const responses = await client.getEntries({ locale, limit : 1000 })
 	return responses.items
 	.filter(item => item.sys.contentType)
 	.filter(item => item.sys.contentType.sys.id === 'settings')
