@@ -28,12 +28,16 @@ const init = async () => {
 			next()
 		})
 		app.get('/', (req, res, next) => {
-			res.json(metas)
+			res.json(metas.map(meta => {
+				const { locale, languageName, basename } = meta
+				return { locale, languageName, basename }
+			}))
 		})
 		/*app.get('/_drop_cache', (req, res, next) => {
 			CACHE = {}
 			res.json({ success : true })
 		})*/
+		console.log(`> GraphQL server started on http://localhost:${port}`)
 		app.listen(port)
 
 		// Create a graphwl server for each locale
@@ -101,6 +105,7 @@ const startServer = (client, schema, locale) => {
 		next()
 	})
 	app.use(`/${locale}/graphql`, graphqlHTTP(ext))
+	console.log(`> GraphQL server for ${locale} started.`)
 }
 
 init()
