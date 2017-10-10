@@ -11,6 +11,7 @@ const port = process.env.GRAPHQL_PORT || process.env.PORT || 5000
 const spaceId = process.env.SPACE_ID
 const cdaToken = process.env.CDA_TOKEN
 const cmaToken = process.env.CMA_TOKEN
+const STAGE = process.env.STAGE
 
 let app
 
@@ -66,10 +67,14 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 }
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
-	return Promise.all(meta.availableLocales.map(localeString => {
-		const locale = localeString.split('_')[0]
-		return fetchSpaceMeta({ cdaToken, spaceId, locale })
-	}))
+	return Promise.all(
+		meta.locales
+		.filter(localeObject => STAGE ? true : localeObject.stage)
+		.map(localeObject => {
+			const { locale }  = localeObject
+			return fetchSpaceMeta({ cdaToken, spaceId, locale })
+		})
+	)
 }
 
 const createDataServer = async ({ spaceId, cdaToken, cmaToken, locale }) => {
