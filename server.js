@@ -69,7 +69,7 @@ const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
 	return Promise.all(
 		meta.locales
-		.filter(localeObject => STAGE ? true : localeObject.stage)
+		.filter(localeObject => STAGE ? true : !localeObject.stage)
 		.map(localeObject => {
 			const { locale }  = localeObject
 			return fetchSpaceMeta({ cdaToken, spaceId, locale })
