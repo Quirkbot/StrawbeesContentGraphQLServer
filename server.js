@@ -17,6 +17,9 @@ let app
 
 const init = async () => {
 	try {
+		// Fetch the content types
+		const contentTypes = await fetchSpaceContentTypes({ cdaToken, spaceId })
+
 		// Fetch the avaiable locales
 		const metas = await fetchSpaceLocaleMetas({ cdaToken, spaceId })
 
@@ -33,6 +36,9 @@ const init = async () => {
 				const { locale, languageName, basename } = meta
 				return { locale, languageName, basename }
 			}))
+		})
+		app.get('/content-types', (req, res, next) => {
+			res.json(contentTypes)
 		})
 		/*app.get('/_drop_cache', (req, res, next) => {
 			CACHE = {}
@@ -64,6 +70,14 @@ const fetchSpaceMeta = async ({ cdaToken, spaceId, locale }) => {
 	.filter(item => item.sys.contentType)
 	.filter(item => item.sys.contentType.sys.id === 'settings')
 	.pop().fields
+}
+const fetchSpaceContentTypes = async ({ cdaToken, spaceId }) => {
+	const client = contentful.createClient({
+		accessToken : cdaToken,
+		space       : spaceId
+	})
+	const responses = await client.getContentTypes()
+	return responses.items
 }
 const fetchSpaceLocaleMetas = async ({ cdaToken, spaceId }) => {
 	const meta = await fetchSpaceMeta({ cdaToken, spaceId })
